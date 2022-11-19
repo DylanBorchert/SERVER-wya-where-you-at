@@ -1,0 +1,22 @@
+{
+  "name": "server-wya-where-you-at",
+  "version": "1.0.0",
+  "description": "Final project for COMP-3504 at Mouint Royal University.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dborc610/SERVER-wya-where-you-at.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dborc610/SERVER-wya-where-you-at/issues"
+  },
+  "homepage": "https://github.com/dborc610/SERVER-wya-where-you-at#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
