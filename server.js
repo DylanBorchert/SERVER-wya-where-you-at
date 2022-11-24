@@ -14,7 +14,7 @@ const startServer = async _ => {
   let db = await database.setup();
 
   const routes = require('./src/routes');
-  routes.register(app, db);
+  routes.routes(app, db);
 
   const PORT = process.env.PORT || 8080;
   const server = app.listen(PORT, () => {
