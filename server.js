@@ -1,9 +1,32 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express');
 const app = express();
-app.use("/", router);
-app.listen(5000, () => console.log("Server Running"));
+const router = express.Router();
+app.use(express.json());
 
-router.get("/", (req, res) => {
-  res.send("Hello World");
+app.use((req, res, next) => {
+  res.set('Content-Type', 'application/json');
+  next();
 });
+
+const startServer = async _ => {
+
+  const database = require("./src/database");
+  let db = await database.setup();
+
+  const routes = require('./src/routes');
+  routes.register(app, db);
+
+  const PORT = process.env.PORT || 8080;
+  const server = app.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`);
+    console.log('Press Ctrl+C to quit.');
+  });
+  process.on('unhandledRejection', err => {
+    console.error(err);
+    throw err;
+  });
+
+  return server;
+}
+
+startServer();
