@@ -258,7 +258,19 @@ module.exports.routes = (app, database) => {
         }
     });
 
+    app.post('/api/users', async (req, res) => {
+        try {
+            let query;
+            query = database.query('INSERT INTO users (email, username, fname, password, phone_number) VALUES (?, ?, ?, ?, ?)', [req.body.email, req.body.username, req.body.fname, req.body.password, req.body.phone_number]);
+            
+            const records = await query;
 
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
 
     app.get("/api/geolocation", (req, res) => {
         const apiCall = unirest(
