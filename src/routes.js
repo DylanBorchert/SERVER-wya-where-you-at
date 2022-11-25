@@ -117,7 +117,7 @@ module.exports.routes = (app, database) => {
         
     });
 
-    app.get('/api/courses/semester/:semester', async (req, res) => {
+    app.get('/api/courses/search/:semester', async (req, res) => {
         try {
             let query;
             query = database.query('SELECT * FROM courses WHERE semester = ?', [req.params.semester]);
