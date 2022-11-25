@@ -117,11 +117,24 @@ module.exports.routes = (app, database) => {
         
     });
 
+    app.get('/api/courses/search/:semester', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT * FROM courses WHERE semester = ?', [req.params.semester]);
+
+            const records = await query;
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (e) {
+            console.error(e);
+            res.status(400).send(err).end();
+        }
+    });
+
     app.post('/api/courses', async (req, res) => {
         try {
             console.log(req.body);
             let query;
-            query = database.query('INSERT INTO courses (name, course_subject, course_code, course_section, start_time, end_time, days_of_week, semester, course_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.body.name, req.body.course_subject, req.body.course_code, req.body.course_section, req.body.start_time, req.body.end_time, req.body.days_of_week, req.body.semester, req.body.course_type]);
+            query = database.query('INSERT INTO courses (name, course_subject, course_code, course_section, start_time, end_time, days_of_week, semester, course_type, room) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.body.name, req.body.course_subject, req.body.course_code, req.body.course_section, req.body.start_time, req.body.end_time, req.body.days_of_week, req.body.semester, req.body.course_type, req.body.room]);
             
             const records = await query;
 
@@ -258,10 +271,67 @@ module.exports.routes = (app, database) => {
         }
     });
 
+    app.post('/api/users', async (req, res) => {
+        try {
+            let query;
+            query = database.query('INSERT INTO users (email, username, fname, password, phone_number) VALUES (?, ?, ?, ?, ?)', [req.body.email, req.body.username, req.body.fname, req.body.password, req.body.phone_number]);
+            
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
+    app.get('/api/friends', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT * FROM friends');
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
+    // Get all friends of the user whose email you provided.
+    app.get('/api/friends/:email', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT * FROM friends WHERE email = ?', [req.params.email]);
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
+    app.post('/api/friends', async (req, res) => {
+        try {
+            let query;
+            query = database.query('INSERT INTO friends (email, friend_email) VALUES (?, ?)', [req.body.email, req.body.friend_email]);
+            
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
     app.get("/api/geolocation", (req, res) => {
         const apiCall = unirest(
-          "GET",
-          "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/"
+            "GET",
+            "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/"
         );
         apiCall.query({
             /**
@@ -276,13 +346,13 @@ module.exports.routes = (app, database) => {
             // "ip": "142.109.127.37",
         });
         apiCall.headers({
-          "x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
-          "x-rapidapi-key": "6960f52de6msh9db305e6cdd65fbp1965aejsn85a8048f9529",
+            "x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
+            "x-rapidapi-key": "6960f52de6msh9db305e6cdd65fbp1965aejsn85a8048f9529",
             "useQueryString": true
         });
         apiCall.end(function(result) {
-          if (res.error) throw new Error(result.error);
-          res.send(result.body);
+            if (res.error) throw new Error(result.error);
+            res.send(result.body);
         });
     });    
     
