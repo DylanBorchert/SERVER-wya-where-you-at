@@ -285,6 +285,49 @@ module.exports.routes = (app, database) => {
         }
     });
 
+    app.get('/api/friends', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT * FROM friends');
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
+    // Get all friends of the user whose email you provided.
+    app.get('/api/friends/:email', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT * FROM friends WHERE email = ?', [req.params.email]);
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
+    app.post('/api/friends', async (req, res) => {
+        try {
+            let query;
+            query = database.query('INSERT INTO friends (email, friend_email) VALUES (?, ?)', [req.body.email, req.body.friend_email]);
+            
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
     app.get("/api/geolocation", (req, res) => {
         const apiCall = unirest(
             "GET",
