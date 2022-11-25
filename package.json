@@ -17,10 +17,11 @@
   },
   "homepage": "https://github.com/dborc610/SERVER-wya-where-you-at#readme",
   "dependencies": {
+    "dotenv": "^8.2.0",
+    "expo-server-sdk": "^3.7.0",
     "unirest": "^0.6.0",
     "express": "^4.17.1",
     "promise-mysql": "^4.0.0",
-    "prompt": "^1.0.0",
-    "dotenv": "^8.2.0"
+    "prompt": "^1.0.0"
   }
 }
