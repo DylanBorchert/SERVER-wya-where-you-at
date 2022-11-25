@@ -1,3 +1,4 @@
+require('dotenv').config();
 "use strict";
 
 module.exports.routes = (app, database) => {
@@ -347,7 +348,7 @@ module.exports.routes = (app, database) => {
         });
         apiCall.headers({
             "x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
-            "x-rapidapi-key": "6960f52de6msh9db305e6cdd65fbp1965aejsn85a8048f9529",
+            "x-rapidapi-key": process.env.GEOLOCATION_API_KEY,
             "useQueryString": true
         });
         apiCall.end(function(result) {
