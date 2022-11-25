@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports.routes = (app, database) => {
-
+    const unirest = require("unirest"); // used for geolocation
 
     app.get('/api/courses', async (req, res) => {
         try{
@@ -257,5 +257,33 @@ module.exports.routes = (app, database) => {
             res.status(400).send(err).end();
         }
     });
+
+    app.get("/api/geolocation", (req, res) => {
+        const apiCall = unirest(
+          "GET",
+          "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/"
+        );
+        apiCall.query({
+            /**
+             * Only one of the "ip" parameters should be active at a time.
+             * 
+             * If you're testing things locally, comment out the first "ip" parameter and uncomment the second one.
+             * 
+             * Otherwise, the first one should remain uncommented, as that's how you retrieve the client device's IP
+             * when the server is running (i.e., it'll be the one we use when we go live).
+             *  */ 
+            "ip": req["x-forwarded-for"] || req.socket.remoteAddress.replace(/^.*:/, ''),
+            // "ip": "142.109.127.37",
+        });
+        apiCall.headers({
+          "x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
+          "x-rapidapi-key": "6960f52de6msh9db305e6cdd65fbp1965aejsn85a8048f9529",
+            "useQueryString": true
+        });
+        apiCall.end(function(result) {
+          if (res.error) throw new Error(result.error);
+          res.send(result.body);
+        });
+    });    
     
 };
