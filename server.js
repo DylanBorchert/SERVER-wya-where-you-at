@@ -16,6 +16,9 @@ const startServer = async _ => {
   const routes = require('./src/routes');
   routes.routes(app, db);
 
+  const expoPush = require('./src/ExpoClient');
+  expoPush.expoPush(app);
+
   const PORT = process.env.PORT || 8080;
   const server = app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
