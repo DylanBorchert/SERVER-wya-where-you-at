@@ -287,8 +287,8 @@ module.exports.routes = (app, database) => {
 
     app.get("/api/geolocation", (req, res) => {
         const apiCall = unirest(
-          "GET",
-          "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/"
+            "GET",
+            "https://ip-geolocation-ipwhois-io.p.rapidapi.com/json/"
         );
         apiCall.query({
             /**
@@ -303,13 +303,13 @@ module.exports.routes = (app, database) => {
             // "ip": "142.109.127.37",
         });
         apiCall.headers({
-          "x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
-          "x-rapidapi-key": "6960f52de6msh9db305e6cdd65fbp1965aejsn85a8048f9529",
+            "x-rapidapi-host": "ip-geolocation-ipwhois-io.p.rapidapi.com",
+            "x-rapidapi-key": "6960f52de6msh9db305e6cdd65fbp1965aejsn85a8048f9529",
             "useQueryString": true
         });
         apiCall.end(function(result) {
-          if (res.error) throw new Error(result.error);
-          res.send(result.body);
+            if (res.error) throw new Error(result.error);
+            res.send(result.body);
         });
     });    
     
