@@ -206,7 +206,7 @@ module.exports.routes = (app, database) => {
     app.get('/api/status/:email', async (req, res) => {
         try {
             let query;
-            query = database.query('SELECT * FROM users WHERE email = ?', [req.params.email]);
+            query = database.query('SELECT * FROM status WHERE email = ?', [req.params.email]);
 
             const records = await query;
 
@@ -234,7 +234,7 @@ module.exports.routes = (app, database) => {
     app.get('/api/users', async (req, res) => {
         try {
             let query;
-            query = database.query('SELECT * FROM users');
+            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users');
 
             const records = await query;
 
@@ -248,9 +248,34 @@ module.exports.routes = (app, database) => {
     app.get('/api/users/:email', async (req, res) => {
         try {
             let query;
-            query = database.query('SELECT * FROM users WHERE email = ?', [req.params.email]);
+            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email = ?', [req.params.email]);
 
             const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
+    app.get('/api/friends/:email', async (req, res) => {
+        try {
+
+            let friends1 = database.query('SELECT friend_email as email FROM friends WHERE approved = ? and email = ?', [1, req.params.email]);
+
+            let friends2 = database.query('SELECT email FROM friends WHERE approved = ? and friend_email = ?', [1, req.params.email]);
+
+            //grab all friend user info 
+            let friends1Info = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email IN (SELECT friend_email as email FROM friends WHERE approved = 1 and email = ? union SELECT email FROM friends WHERE approved = 1 and friend_email = ?)', [req.params.email, req.params.email]);
+
+            const records1 = await friends1;
+            const records2 = await friends2;
+
+
+            let records = await friends1Info;
+
+            
 
             res.status(200).send(JSON.stringify(records)).end();
         } catch (err) {
@@ -286,5 +311,30 @@ module.exports.routes = (app, database) => {
           res.send(result.body);
         });
     });    
+
+
+    app.post('/login', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email = ? AND password = ?', [req.body.email, req.body.password]);
+
+            const records = await query;
+
+            if (records.length > 0) {
+                let result = records[0];
+                result.status = "success";
+                res.status(200).send(JSON.stringify(records)).end();
+            } else {
+                res.status(400).send(JSON.stringify({
+                    status: "failed",
+                    error: 'Invalid email or password'
+                })).end();
+            }
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+
+        }
+    });
     
 };
