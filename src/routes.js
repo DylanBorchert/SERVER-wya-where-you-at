@@ -103,6 +103,21 @@ module.exports.routes = (app, database) => {
         
     });
 
+    app.get('/api/courses/semester/:semester', async (req, res) => {
+        try{
+            let query;
+            query = database.query('SELECT * FROM courses WHERE semester = ?', [req.params.semester]);
+            
+            const records = await query;
+    
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+        
+    });
+
     app.get('/api/courses/search/:name', async (req, res) => {
         try{
             let query;
