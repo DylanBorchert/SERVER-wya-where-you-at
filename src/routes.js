@@ -218,6 +218,21 @@ module.exports.routes = (app, database) => {
         }
     });
 
+    app.get('/api/course/schedules/:email', async (req, res) => {
+
+        try {
+            let query;
+            query = database.query('select course_id, course_subject, course_code, course_section, name, start_time, end_time, days_of_week, semester, course_type, room from courses c Join schedules s on c.id = s.course_id where email = ?', [req.params.email]);
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
     app.get('/api/status/:email', async (req, res) => {
         try {
             let query;
