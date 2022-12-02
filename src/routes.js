@@ -264,7 +264,7 @@ module.exports.routes = (app, database) => {
     app.put('/api/status', async (req, res) => {
         try {
             let query;
-            query = database.query('UPDATE users SET status = ? WHERE email = ?', [req.body.status, req.body.email]);
+            query = database.query('UPDATE status SET status = ? WHERE email = ?', [req.body.status, req.body.email]);
 
             const records = await query;
 
