@@ -313,7 +313,7 @@ module.exports.routes = (app, database) => {
     app.get('/api/users/:email', async (req, res) => {
         try {
             let query;
-            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email = ?', [req.params.email]);
+            query = database.query('SELECT email, username, fname, phone_number, profile_pic, status FROM users WHERE email = ?', [req.params.email]);
 
             const records = await query;
 
