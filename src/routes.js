@@ -133,6 +133,20 @@ module.exports.routes = (app, database) => {
         
     });
 
+    app.get('/api/courses/last', async (req, res) => {
+        try {
+            let query;
+            query = database.query('SELECT MAX(id) FROM courses');
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (e) {
+            console.error(e);
+            res.status(400).send(err).end();
+        }
+    });
+
     app.post('/api/courses', async (req, res) => {
         try {
             console.log(req.body);
