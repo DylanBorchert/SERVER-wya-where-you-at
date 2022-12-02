@@ -137,7 +137,7 @@ module.exports.routes = (app, database) => {
         try {
             console.log(req.body);
             let query;
-            query = database.query('INSERT INTO courses (name, course_subject, course_code, course_section, start_time, end_time, days_of_week, semester, course_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.body.name, req.body.course_subject, req.body.course_code, req.body.course_section, req.body.start_time, req.body.end_time, req.body.days_of_week, req.body.semester, req.body.course_type]);
+            query = database.query('INSERT INTO courses (name, course_subject, course_code, course_section, start_time, end_time, days_of_week, semester, course_type, room) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [req.body.name, req.body.course_subject, req.body.course_code, req.body.course_section, req.body.start_time, req.body.end_time, req.body.days_of_week, req.body.semester, req.body.course_type, req.body.room]);
             
             const records = await query;
 
