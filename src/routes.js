@@ -387,31 +387,6 @@ module.exports.routes = (app, database) => {
           if (res.error) throw new Error(result.error);
           res.send(result.body);
         });
-    });    
-
-
-    app.post('/login', async (req, res) => {
-        try {
-            let query;
-            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email = ? AND password = ?', [req.body.email, req.body.password]);
-
-            const records = await query;
-
-            if (records.length > 0) {
-                let result = records[0];
-                result.status = "success";
-                res.status(200).send(JSON.stringify(records)).end();
-            } else {
-                res.status(400).send(JSON.stringify({
-                    status: "failed",
-                    error: 'Invalid email or password'
-                })).end();
-            }
-        } catch (err) {
-            console.log(err);
-            res.status(400).send(err).end();
-
-        }
     });
     
 };
