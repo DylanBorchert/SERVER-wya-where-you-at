@@ -261,7 +261,14 @@ module.exports.routes = (app, database) => {
         }
     });
 
-    app.put('/api/status', async (req, res) => {
+    /**
+     * We're adding a status attirbute to the users table since, as of now, that makes things much easier when displaying
+     * things like the friends list and user status.
+     * 
+     * This might make the status table obsolete, but I'm going to keep all the routes for now just in case we need 
+     * them down the line. 
+     */
+    app.put('/api/users', async (req, res) => {
         try {
             let query;
             query = database.query('UPDATE users SET status = ? WHERE email = ?', [req.body.status, req.body.email]);
@@ -275,10 +282,24 @@ module.exports.routes = (app, database) => {
         }
     });
 
+    app.put('/api/status', async (req, res) => {
+        try {
+            let query;
+            query = database.query('UPDATE status SET status = ? WHERE email = ?', [req.body.status, req.body.email]);
+
+            const records = await query;
+
+            res.status(200).send(JSON.stringify(records)).end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    });
+
     app.get('/api/users', async (req, res) => {
         try {
             let query;
-            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users');
+            query = database.query('SELECT email, username, fname, phone_number, profile_pic, status FROM users');
 
             const records = await query;
 
@@ -292,7 +313,7 @@ module.exports.routes = (app, database) => {
     app.get('/api/users/:email', async (req, res) => {
         try {
             let query;
-            query = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email = ?', [req.params.email]);
+            query = database.query('SELECT email, username, fname, phone_number, profile_pic, status FROM users WHERE email = ?', [req.params.email]);
 
             const records = await query;
 
