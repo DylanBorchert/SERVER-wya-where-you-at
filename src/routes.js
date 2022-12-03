@@ -332,7 +332,7 @@ module.exports.routes = (app, database) => {
             let friends2 = database.query('SELECT email FROM friends WHERE approved = ? and friend_email = ?', [1, req.params.email]);
 
             //grab all friend user info 
-            let friends1Info = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email IN (SELECT friend_email as email FROM friends WHERE approved = 1 and email = ? union SELECT email FROM friends WHERE approved = 1 and friend_email = ?)', [req.params.email, req.params.email]);
+            let friends1Info = database.query('SELECT email, username, fname, phone_number, profile_pic, status FROM users WHERE email IN (SELECT friend_email as email FROM friends WHERE approved = 1 and email = ? union SELECT email FROM friends WHERE approved = 1 and friend_email = ?)', [req.params.email, req.params.email]);
 
             const records1 = await friends1;
             const records2 = await friends2;
