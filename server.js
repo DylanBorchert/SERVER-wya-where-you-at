@@ -1,4 +1,5 @@
 const express = require('express');
+const schedule = require('node-schedule');
 const app = express();
 const router = express.Router();
 app.use(express.json());
@@ -21,6 +22,13 @@ const startServer = async _ => {
 
   const userAccount = require('./src/userAccount');
   userAccount.userAccount(app, db);
+
+  const friends = require('./src/friends');
+  friends.friends(app, db);
+
+  const job = schedule.scheduleJob("0 */10 * * * *", function(){
+    console.log('Put scheduled task here : ' + new Date());
+  });
 
   const PORT = process.env.PORT || 8080;
   const server = app.listen(PORT, () => {

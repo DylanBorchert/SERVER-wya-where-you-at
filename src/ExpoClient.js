@@ -2,10 +2,6 @@
 
 const { Expo } = require('expo-server-sdk');
 
-let somePushTokens = 
-    ['ExponentPushToken[cCxGVTMrNm3e7TB8qa3OBa]', //Dylan's iphone 13
-    'ExponentPushToken[JVkbRPFvpIZVl6ju0jiQXg]',]; //Dylan's s10
-
 module.exports.expoPush = (app) => {
     
     app.get('/boop/:token', async (req, res) => {
@@ -14,8 +10,6 @@ module.exports.expoPush = (app) => {
         //send push notification to all users
         const expo = new Expo();
         let messages = [];
-
-        
         
         // Each push token looks like ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]
         // Check that all your push tokens appear to be valid Expo push tokens
@@ -31,9 +25,6 @@ module.exports.expoPush = (app) => {
             data: { withSome: 'data' },
         })
     
-
-
-
         let chunks = expo.chunkPushNotifications(messages);
         let tickets = [];
         (async () => {
