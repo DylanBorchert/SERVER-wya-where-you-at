@@ -19,7 +19,7 @@ module.exports.friends = (app, database) => {
     });
 
 
-    app.get('/api/friends/Reqests/:email', async (req, res) => {
+    app.get('/api/friends/requests/:email', async (req, res) => {
         try {
 
             //grab all friend user info 
@@ -35,7 +35,7 @@ module.exports.friends = (app, database) => {
         }
     });
 
-    app.get('/api/friends/ReqestSent/:email', async (req, res) => {
+    app.get('/api/friends/requestSent/:email', async (req, res) => {
         try {
 
             //grab all friend user info 
@@ -51,7 +51,7 @@ module.exports.friends = (app, database) => {
         }
     });
 
-    app.put('/api/friends/ReqestAccept/:friendemail/:email', async (req, res) => {
+    app.put('/api/friends/requestAccept/:friendemail/:email', async (req, res) => {
         try {
 
             //grab all friend user info 
@@ -67,7 +67,7 @@ module.exports.friends = (app, database) => {
         }
     });
 
-    app.post('/api/friends/Reqest/:friendemail/:email', async (req, res) => {
+    app.post('/api/friends/request/:friendemail/:email', async (req, res) => {
         try {
 
             //grab all friend user info 
