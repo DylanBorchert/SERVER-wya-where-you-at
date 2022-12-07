@@ -6,7 +6,7 @@ module.exports.friends = (app, database) => {
         try {
 
             //grab all friend user info 
-            let friends = database.query('SELECT email, username, fname, phone_number, profile_pic, status FROM users WHERE email IN (SELECT friend_email as email FROM friends WHERE approved = 1 and email = ? union SELECT email FROM friends WHERE approved = 1 and friend_email = ?)', [req.params.email, req.params.email]);
+            let friends = database.query('SELECT email, username, fname, phone_number, profile_pic, status, push_token FROM users WHERE email IN (SELECT friend_email as email FROM friends WHERE approved = 1 and email = ? union SELECT email FROM friends WHERE approved = 1 and friend_email = ?)', [req.params.email, req.params.email]);
 
             let records = await friends;
 
