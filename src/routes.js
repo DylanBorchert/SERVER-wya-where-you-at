@@ -220,6 +220,18 @@ module.exports.routes = (app, database) => {
         }
     });
 
+    app.delete('/api/schedules', async (req, res) => {
+        try {
+            let query;
+            query = database.query("DELETE FROM schedules WHERE email = ? AND course_id = ?", [req.body.email, req.body.course_id]);
+
+            res.status(200).json("Item deleted successfully.").end();
+        } catch (err) {
+            console.log(err);
+            res.status(400).send(err).end();
+        }
+    })
+
     app.get('/api/schedules/:email', async (req, res) => {
         try {
             let query;
