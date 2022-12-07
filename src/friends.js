@@ -55,7 +55,7 @@ module.exports.friends = (app, database) => {
         try {
 
             //grab all friend user info 
-            let friends = database.query('UPDATE friends SET approved = 1 WHERE friend_email = ? and email = ?', [req.params.friendemail, req.params.email]);
+            let friends = database.query('UPDATE friends SET approved = 1 WHERE friend_email = ? and email = ?', [req.params.email, req.params.friendemail]);
 
             let records = await friends;
 
@@ -82,6 +82,23 @@ module.exports.friends = (app, database) => {
             res.status(400).send(err).end();
         }
     });
+
+    app.get('/api/friends/Find/:email', async (req, res) => {
+        try{
+                
+                let friends = database.query('SELECT email, username, fname, phone_number, profile_pic FROM users WHERE email NOT IN (SELECT friend_email as email FROM friends WHERE email = ? union SELECT email FROM friends WHERE friend_email = ?) and email != ?', [req.params.email, req.params.email, req.params.email]);
+    
+                let records = await friends;
+    
+                res.status(200).send(JSON.stringify(records)).end();
+    
+        } catch (err) {
+            console.log(err);
+            res.status(400).send
+        }
+    });
+
+
 
 
 

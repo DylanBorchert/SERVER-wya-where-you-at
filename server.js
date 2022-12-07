@@ -26,8 +26,11 @@ const startServer = async _ => {
   const friends = require('./src/friends');
   friends.friends(app, db);
 
-  const job = schedule.scheduleJob("0 */10 * * * *", function(){
-    console.log('Put scheduled task here : ' + new Date());
+  const inclass = schedule.scheduleJob("0 */30,0 * * * *", function(){
+    console.log('Will update users status to in class if they are on campus');
+  });
+  const outclass = schedule.scheduleJob("0 */20,50 * * * *", function(){
+    console.log('Will update users status to out of class if they are on campus');
   });
 
   const PORT = process.env.PORT || 8080;
