@@ -4,8 +4,8 @@ const { Expo } = require('expo-server-sdk');
 
 module.exports.expoPush = (app) => {
     
-    app.get('/boop/:token', async (req, res) => {
-        let pushToken = req.params.token;
+    app.put('/boop/:token', async (req, res) => {
+        let pushToken = req.body.pushToken;
     
         //send push notification to all users
         const expo = new Expo();
@@ -20,9 +20,9 @@ module.exports.expoPush = (app) => {
         messages.push({
             to: pushToken,
             sound: 'default',
-            title: 'Boop',
-            body: 'hehe boop',
-            data: { withSome: 'data' },
+            title: req.body.title,
+            body: req.body.body,
+            data: req.body.data,
         })
     
         let chunks = expo.chunkPushNotifications(messages);
