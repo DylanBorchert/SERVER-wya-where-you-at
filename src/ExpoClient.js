@@ -4,7 +4,7 @@ const { Expo } = require('expo-server-sdk');
 
 module.exports.expoPush = (app) => {
     
-    app.put('/boop/:token', async (req, res) => {
+    app.put('/boop', async (req, res) => {
         let pushToken = req.body.pushToken;
     
         //send push notification to all users
@@ -20,9 +20,9 @@ module.exports.expoPush = (app) => {
         messages.push({
             to: pushToken,
             sound: 'default',
-            title: req.body.title,
-            body: req.body.body,
-            data: req.body.data,
+            title: req.body.title || 'Boop!',
+            body: req.body.body || 'You have been booped!',
+            data: req.body.data || { },
         })
     
         let chunks = expo.chunkPushNotifications(messages);
@@ -34,14 +34,14 @@ module.exports.expoPush = (app) => {
             for (let chunk of chunks) {
                 try {
                 let ticketChunk = await expo.sendPushNotificationsAsync(chunk);
-                    console.log(ticketChunk);
+                    res.status(200).send(ticketChunk);
                     tickets.push(...ticketChunk);
                 // NOTE: If a ticket contains an error code in ticket.details.error, you
                 // must handle it appropriately. The error codes are listed in the Expo
                 // documentation:
                 // https://docs.expo.io/push-notifications/sending-notifications/#individual-errors
                 } catch (error) {
-                    console.error(error);
+                    res.status(200).send(`The error code is ${details.error}`);
                 }
             }
         })();
@@ -97,11 +97,10 @@ module.exports.expoPush = (app) => {
                 }
             }
             } catch (error) {
-            console.error(error);
+                res.status(200).send(`The error code is ${details.error}`);
             }
         }
         })();
-        
 
     });
 
